@@ -56,7 +56,7 @@ class Search extends React.Component {
               </forms>
             )
         }
-        <span>{`Results : ${search}`}</span>
+        <span>{`Results: ${search}`}</span>
         {verification
           ? albumSearch.map((card, index) => (
             <div key={ index }>

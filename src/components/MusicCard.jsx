@@ -1,65 +1,89 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
-class MusicCard extends Component {
-  constructor(props) {
-    super(props);
+class MusicCard extends React.Component {
+  constructor() {
+    super();
     this.state = {
-      favorite: false,
       loading: false,
+      fav: [],
     };
   }
 
-  favSong = async () => {
-    const { paramFav } = this.props;
-    this.setState((previous) => ({ loading: true, favorite: !previous.favorite }));
-    const res = await addSong(paramFav);
-    console.log(res);
-    this.setState({ loading: false });
+  async componentDidMount() {
+    const listSongs = await getFavoriteSongs();
+    const id = await listSongs.map((parameter) => parameter.trackId);
+    this.setState({ fav: await id });
+  }
+
+  checkboxInput = async ({ target }) => {
+    const { songs } = this.props;
+    const { fav } = this.state;
+
+    if (target.checked) {
+      const favMusic = songs.find((e) => e.trackId === Number(target.name));
+      this.setState((prev) => ({
+        loading: true,
+        fav: [...prev.fav, favMusic.trackId],
+      }));
+      await addSong(await favMusic);
+    } else {
+      const favMusic = songs.find((e) => e.trackId === Number(target.name));
+      const removedFav = fav
+        .filter((e) => Number(e) !== Number(target.name));
+      this.setState({
+        loading: true,
+        fav: removedFav,
+      });
+      await removeSong(await favMusic);
+    }
+    this.setState({
+      loading: false,
+    });
   };
 
   render() {
-    const { previewUrl, trackName, trackId } = this.props;
-    const { loading, favorite } = this.state;
+    const { songs } = this.props;
+    const { loading, fav } = this.state;
+    if (loading) {
+      return <p>loading...</p>;
+    }
     return (
-      <div>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ul>
-            <li>
-              <p>{trackName}</p>
-              <br />
-              <audio data-testid="audio-component" src={ previewUrl } controls>
+      <>
+        {songs.map((element, i) => (
+          element.trackId
+          && (
+            <div key={ i }>
+              <h4>{element.trackName}</h4>
+              <audio data-testid="audio-component" src={ element.previewUrl } controls>
                 <track kind="captions" />
-                Your browser does not support the
-                {' '}
+                O seu navegador não suporta o elemento
                 <code>audio</code>
-                {' '}
-                element
               </audio>
-              <label htmlFor="input-favorite">
-                Favorite
+              <label
+                htmlFor={ `checkbox-music-${element.trackId}` }
+                data-testid={ `checkbox-music-${element.trackId}` }
+              >
                 <input
                   type="checkbox"
-                  data-testid={ `checkbox-music-${trackId}` }
-                  id="input-favorite"
-                  onChange={ this.favSong }
-                  checked={ favorite }
+                  name={ element.trackId }
+                  id={ `checkbox-music-${element.trackId}` }
+                  onChange={ this.checkboxInput }
+                  checked={ fav.includes(element.trackId) }
                 />
+                Favorite
               </label>
-            </li>
-          </ul>
-        )}
-      </div>
+            </div>
+          )
+        ))}
+      </>
     );
   }
 }
 
 MusicCard.propTypes = {
-  trackName: PropTypes.string,
-  previewUrl: PropTypes.string,
-}.isRequired;
+  songs: PropTypes.arrayOf(PropTypes.shape).isRequired,
+};
 
 export default MusicCard;
