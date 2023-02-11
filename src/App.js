@@ -19,7 +19,7 @@ class App extends React.Component {
         <Route path="/album/:id" component={ Album } />
         <Route path="/favorites" component={ Favorites } />
         <Route exact path="/profile" component={ Profile } />
-        <Route path="/notFound" component={ NotFound } />
+        <Route path="*" component={ NotFound } />
       </Switch>
     );
   }
