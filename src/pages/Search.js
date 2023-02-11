@@ -1,93 +1,75 @@
-import React, { Component } from 'react';
-import MusicCard from '../components/MusicCard';
+import React from 'react';
 import Header from '../components/Header';
-import Loading from '../components/Loading';
+import AlbumCardList from '../components/AlbumCardList';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 
-export default class Search extends Component {
-  constructor() {
-    super();
-    this.state = {
-      artist: '',
-      disableBtn: true,
-      loading: false,
-      albumSearch: [],
-      results: false,
-      name: false,
-    };
-  }
+const numberValidation = 2;
 
-  enableButton = () => {
-    const { artist } = this.state;
-    if (artist.length >= 2) {
-      this.setState({
-        disableBtn: false,
-      });
-    }
+class Search extends React.Component {
+  state = {
+    disableBtn: true,
+    search: '',
+    loading: false,
+    albumSearch: [],
   };
 
-  handleInputChange = ({ target }) => {
-    const artist = target.value;
-    this.setState({
-      artist,
-    }, () => {
-      this.enableButton();
-    });
-  };
+  handleValidationInput = ({ target: { value } }) => (
+    value.length >= numberValidation
+      ? this.setState({
+        disableBtn: false, search: value })
+      : this.setState({
+        disableBtn: true, search: value }));
 
-  handleClick = async () => {
-    const { artist } = this.state;
-    this.setState({
-      loading: true,
-    });
-    const albuns = await searchAlbumsAPI(artist);
-    this.setState({
-      name: true,
-      albumSearch: albuns,
-      loading: false,
-    }, () => {
-      const { albumSearch } = this.state;
-      if (albumSearch.length === 0) {
-        this.setState({ results: false });
-      } else {
-        this.setState({ results: true });
-      }
-    });
+  searchResponse = async () => {
+    const { search } = this.state;
+    this.setState({ loading: true });
+    const res = await searchAlbumsAPI(search);
+    this.setState({ loading: false, albumSearch: res });
   };
 
   render() {
-    const { artist, disableBtn, loading, albumSearch, results, name } = this.state;
+    const { disableBtn, search, loading, albumSearch } = this.state;
+    const verification = albumSearch.length > 0;
     return (
-      loading ? <Loading /> : (
-        <div data-testid="page-search">
-          <Header />
-          <form>
-            <label htmlFor="Artist-Name">
-              <input
-                data-testid="search-artist-input"
-                name="artist"
-                type="text"
-                placeholder="Artist"
-                onChange={ this.handleInputChange }
+      <div data-testid="page-search">
+        <Header />
+        {
+          loading
+            ? <span>loading...</span>
+            : (
+              <forms>
+                <input
+                  data-testid="search-artist-input"
+                  type="text"
+                  placeholder="Artist"
+                  onChange={ this.handleValidationInput }
+                />
+                <button
+                  disabled={ disableBtn }
+                  data-testid="search-artist-button"
+                  type="button"
+                  onClick={ this.searchResponse }
+                >
+                  Search
+
+                </button>
+              </forms>
+            )
+        }
+        <span>{`Results : ${search}`}</span>
+        {verification
+          ? albumSearch.map((card, index) => (
+            <div key={ index }>
+              <AlbumCardList
+                collectionName={ card.collectionName }
+                collectionImage={ card.artworkUrl100 }
+                collectionId={ card.collectionId }
               />
-            </label>
-            <button
-              data-testid="search-artist-button"
-              disabled={ disableBtn }
-              type="button"
-              onClick={ this.handleClick }
-            >
-              Search
-            </button>
-          </form>
-          {name && (<h3>{`Resultado de álbuns de: ${artist}`}</h3>)}
-          {results ? (
-            <div>
-              <MusicCard searchAlbums={ albumSearch } />
-            </div>
-          ) : <h2>No albums were found</h2>}
-        </div>
-      )
+            </div>))
+          : <h2>No albums were found</h2> }
+      </div>
     );
   }
 }
+
+export default Search;
