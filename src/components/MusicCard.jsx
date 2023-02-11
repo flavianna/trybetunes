@@ -1,37 +1,65 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { addSong } from '../services/favoriteSongsAPI';
 
-export default class MusicCard extends Component {
+class MusicCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      favorite: false,
+      loading: false,
+    };
+  }
+
+  favSong = async () => {
+    const { paramFav } = this.props;
+    this.setState((previous) => ({ loading: true, favorite: !previous.favorite }));
+    const res = await addSong(paramFav);
+    console.log(res);
+    this.setState({ loading: false });
+  };
+
   render() {
-    const { searchAlbums } = this.props;
+    const { previewUrl, trackName, trackId } = this.props;
+    const { loading, favorite } = this.state;
     return (
       <div>
-        {
-          searchAlbums.map((element) => (
-            <Link
-              data-testid={ `link-to-album-${element.collectionId}` }
-              key={ element.collectionId }
-              to={ `/album/${element.collectionId} ` }
-            >
-              <div>
-                <img
-                  src={ element.artworkUrl100 }
-                  alt={ `Imagem do álbum ${element.collectionName}` }
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul>
+            <li>
+              <p>{trackName}</p>
+              <br />
+              <audio data-testid="audio-component" src={ previewUrl } controls>
+                <track kind="captions" />
+                Your browser does not support the
+                {' '}
+                <code>audio</code>
+                {' '}
+                element
+              </audio>
+              <label htmlFor="input-favorite">
+                Favorite
+                <input
+                  type="checkbox"
+                  data-testid={ `checkbox-music-${trackId}` }
+                  id="input-favorite"
+                  onChange={ this.favSong }
+                  checked={ favorite }
                 />
-                <h4>{element.collectionName}</h4>
-              </div>
-            </Link>
-          ))
-        }
+              </label>
+            </li>
+          </ul>
+        )}
       </div>
     );
   }
 }
+
 MusicCard.propTypes = {
-  searchAlbums: PropTypes.arrayOf(PropTypes.shape({
-    collectionId: PropTypes.number.isRequired,
-    collectionName: PropTypes.string.isRequired,
-    artworkUrl100: PropTypes.string.isRequired,
-  })).isRequired,
-};
+  trackName: PropTypes.string,
+  previewUrl: PropTypes.string,
+}.isRequired;
+
+export default MusicCard;

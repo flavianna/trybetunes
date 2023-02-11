@@ -67,7 +67,7 @@ export default class Search extends Component {
                 data-testid="search-artist-input"
                 name="artist"
                 type="text"
-                placeholder="Nome do artista"
+                placeholder="Artist"
                 onChange={ this.handleInputChange }
               />
             </label>
@@ -77,7 +77,7 @@ export default class Search extends Component {
               type="button"
               onClick={ this.handleClick }
             >
-              Buscar
+              Search
             </button>
           </form>
           {name && (<h3>{`Resultado de álbuns de: ${artist}`}</h3>)}
@@ -85,7 +85,7 @@ export default class Search extends Component {
             <div>
               <MusicCard searchAlbums={ albumSearch } />
             </div>
-          ) : <h2>Nenhum álbum foi encontrado</h2>}
+          ) : <h2>No albums were found</h2>}
         </div>
       )
     );

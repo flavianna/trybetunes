@@ -35,7 +35,7 @@ export default class Header extends Component {
               <Loading />
             ) : (
               <p data-testid="header-user-name">
-                Bem-vindo(a)
+                Welcome,
                 <p>
                   {user}
                 </p>
