@@ -50,34 +50,40 @@ class MusicCard extends React.Component {
       return <p>loading...</p>;
     }
     return (
-      <>
+      <div className="music-card-container">
         {songs.map((element, i) => (
           element.trackId
-          && (
-            <div key={ i }>
-              <h4>{element.trackName}</h4>
-              <audio data-testid="audio-component" src={ element.previewUrl } controls>
-                <track kind="captions" />
-                O seu navegador não suporta o elemento
-                <code>audio</code>
-              </audio>
-              <label
-                htmlFor={ `checkbox-music-${element.trackId}` }
-                data-testid={ `checkbox-music-${element.trackId}` }
-              >
-                <input
-                  type="checkbox"
-                  name={ element.trackId }
-                  id={ `checkbox-music-${element.trackId}` }
-                  onChange={ this.checkboxInput }
-                  checked={ fav.includes(element.trackId) }
-                />
-                Favorite
-              </label>
-            </div>
-          )
+        && (
+          <div key={ i } className="music-card">
+            <h4 className="music-card-title">{element.trackName}</h4>
+            <audio
+              className="music-card-player"
+              data-testid="audio-component"
+              src={ element.previewUrl }
+              controls
+            >
+              <track kind="captions" />
+              O seu navegador não suporta o elemento
+              <code>audio</code>
+            </audio>
+            <label
+              htmlFor={ `checkbox-music-${element.trackId}` }
+              data-testid={ `checkbox-music-${element.trackId}` }
+            >
+              <input
+                className="accent-lime-400"
+                type="checkbox"
+                name={ element.trackId }
+                id={ `checkbox-music-${element.trackId}` }
+                onChange={ this.checkboxInput }
+                checked={ fav.includes(element.trackId) }
+              />
+              {' Favorite'}
+            </label>
+          </div>
+        )
         ))}
-      </>
+      </div>
     );
   }
 }

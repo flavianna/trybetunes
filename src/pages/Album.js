@@ -34,12 +34,16 @@ class Album extends React.Component {
     return (
       <>
         <Header />
-        <div data-testid="page-album">
-          <img src={ listSongs[0].artworkUrl100 } alt="Imagem do Album" />
-          <h2 data-testid="artist-name">{listSongs[0].artistName}</h2>
-          <h3 data-testid="album-name">{listSongs[0].collectionName}</h3>
+        <div className="bg-black w-screen flex flex-col items-center">
+          <div
+            className="bg-black w-screen flex flex-col items-center container-Album"
+          >
+            <img className="image" src={ listSongs[0].artworkUrl100 } alt="Imagem do Album" />
+            <h2 className="text-white mt-5" data-testid="artist-name">{listSongs[0].artistName}</h2>
+            <h3 className="text-white mt-5" data-testid="album-name">{listSongs[0].collectionName}</h3>
+          </div>
+          <MusicCard songs={ listSongs } />
         </div>
-        <MusicCard songs={ listSongs } />
       </>
     );
   }

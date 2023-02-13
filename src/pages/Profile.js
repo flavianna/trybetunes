@@ -23,21 +23,28 @@ class Profile extends React.Component {
     return (
       <>
         <Header />
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <div data-testid="page-profile">
-            <Link to="/profile/edit">Profile Edit</Link>
-            <img
+        <div className="bg-black w-screen h-screen flex flex-col items-center fav-general">
+
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="profile flex flex-col items-center space-x-2" data-testid="page-profile">
+              {/* <Link to="/profile/edit">Profile Edit</Link> */}
+              <div
+                className="w-20 h-20 rounded-full bg-white ml-auto mr-6 mb-5"
+              />
+              {/* <img
               src={ information.image }
               data-testid="profile-image"
               alt="Profile Image"
-            />
-            <p>{information.name}</p>
-            <p>{information.email}</p>
-            <p>{information.description}</p>
-          </div>
-        )}
+            /> */}
+              <p className="text-white"> {` Usuário: ${information.name}`}</p>
+              <p>{information.email}</p>
+              <p>{information.description}</p>
+            </div>
+          )}
+
+        </div>
       </>
     );
   }

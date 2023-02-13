@@ -24,31 +24,54 @@ export default class Header extends Component {
   render() {
     const { user, loading } = this.state;
     return (
-      <div className="bg-stone-200 min-h-screen">
-
+      <div>
         <header
-          className="shadow-md w-full fixed top-0 left-0 md:flex bg-white py-4 space-x-6"
-          data-testid="header-component"
+          className="shadow-md w-full fixed top-0 left-0
+           bg-black py-4 px-6 flex-col"
         >
-          <div>
-            {loading ? (
-              <Loading />
-            ) : (
-              <p data-testid="header-user-name">
-                Welcome,
-                <p>
-                  {user}
-                </p>
+          <nav className="flex">
+            <span
+              className="material-symbols-outlined stroke-2 text-3xl
+            fill-current text-lime-400"
+            >
+              headphones
+            </span>
+            <Link
+              className="px-4 py-2 text-sm font-bold
+               text-white hover:bg-neutral-700 font-sans rounded"
+              data-testid="link-to-search"
+              to="/search"
+            >
+              Search
+            </Link>
+            <Link
+              className="px-4 py-2 text-sm font-bold
+              text-white hover:bg-neutral-700 font-sans rounded"
+              data-testid="link-to-favorites"
+              to="/favorites"
+            >
+              Favorites
+            </Link>
+            <Link
+              className="px-4 py-2 text-sm font-bold
+              text-white hover:bg-neutral-700 font-sans rounded"
+              data-testid="link-to-profile"
+              to="/profile"
+            >
+              Profile
+            </Link>
+            <div className="flex items-center ml-auto">
+              {loading ? (
+                <Loading />
+              ) : (
 
-              </p>
-            )}
-            <section className="w-full top-0 left-0 md:flex bg-white py-4 space-x-6">
-              <Link data-testid="link-to-search" to="/search">Search</Link>
-              <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
-              <Link data-testid="link-to-profile" to="/profile">Profile</Link>
-            </section>
-          </div>
+                <div
+                  className="w-7 h-7 rounded-full bg-white ml-auto"
+                />
 
+              )}
+            </div>
+          </nav>
         </header>
       </div>
     );

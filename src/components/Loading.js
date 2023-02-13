@@ -5,7 +5,7 @@ export default class Loading extends Component {
     return (
       <section className="Loading">
         <div className="loading" />
-        <span className="material-symbols-outlined m-6">
+        <span className="material-symbols-outlined m-">
           pending
         </span>
       </section>
