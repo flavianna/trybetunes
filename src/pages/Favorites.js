@@ -25,7 +25,7 @@ class Favorites extends React.Component {
     const { allSongs } = this.state;
 
     return (
-      <section className="bg-black w-screen flex flex-col items-center">
+      <section className="bg-black w-screen h-screen flex flex-col items-center">
         <h3 className="text-white fav text-lg">Favorites</h3>
         <div className="favorites" data-testid="page-favorites">
           <MusicCard songs={ allSongs } />

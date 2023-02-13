@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
 export default class Header extends Component {
@@ -13,6 +14,11 @@ export default class Header extends Component {
   componentDidMount() {
     this.userInformation();
   }
+
+  userInformation = async () => {
+    await getUser();
+    this.setState({ loading: false });
+  };
 
   render() {
     const { loading } = this.state;
