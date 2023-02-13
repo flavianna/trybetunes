@@ -7,6 +7,7 @@ export default class Header extends Component {
     super();
     this.state = {
       loading: true,
+
     };
   }
 
@@ -15,7 +16,6 @@ export default class Header extends Component {
   }
 
   userInformation = async () => {
-    await getUser();
     this.setState({ loading: false });
   };
 
