@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
 export default class Header extends Component {
   constructor() {
     super();
     this.state = {
-      user: '',
       loading: true,
     };
   }
@@ -16,13 +14,8 @@ export default class Header extends Component {
     this.userInformation();
   }
 
-  userInformation = async () => {
-    const infoUser = await getUser();
-    this.setState({ user: infoUser.name, loading: false });
-  };
-
   render() {
-    const { user, loading } = this.state;
+    const { loading } = this.state;
     return (
       <div>
         <header
