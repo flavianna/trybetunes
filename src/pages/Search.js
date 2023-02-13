@@ -39,7 +39,7 @@ class Search extends React.Component {
       >
         <Header />
         <div className="flex justify-center my-40">
-          <form className="w-64 mx-auto">
+          <form className="w-64 mx-auto flex flex-col flex-nowrap items-center">
             <div className="flex align-items-center">
               <h2 className="text-2xl font-bold ml-7 text-white mt-1">
                 Trybetunes
@@ -83,7 +83,7 @@ class Search extends React.Component {
               </div>
             ))
           ) : (
-            <h2 className="flex text-white mt-5 justify-center">...</h2>
+            <h2 className="flext text-black flex-start items-end">...</h2>
           )}
         </div>
       </div>
